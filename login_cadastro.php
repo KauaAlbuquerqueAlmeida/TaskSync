@@ -1,27 +1,25 @@
 <?php
 session_start();
 
-$alertMessage = null;
+if (isset($_SESSION['usuario'])) {
+    header("Location: tarefas.php");
+    exit();
+}
 
-$servername = "localhost";
+$hostname = "localhost";
 $username = "root";
 $password = "";
-$dbname = "tasksync";
-
-$conn = new mysqli($servername, $username, $password);
+$database = "tasksync";
+$conn = new mysqli($hostname, $username, $password, $database);
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = $_POST['nome'];
+    $password = $_POST['senha'];
+    }
 
-    // Verifica se o usuário existe
-    $sql = "SELECT * FROM users WHERE username = '$username'";
-    $result = $conn->query($sql);
-}
-
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +43,6 @@ $conn->close();
             <input type="password" id="senha" name="senha" required>
             <label for="senha_confirmacao">Confirme a Senha:</label>
             <input type="password" id="senha_confirmacao" name="senha_confirmacao" required>
-            <p>Já tem uma conta? <a href="index.php">Faça login</a></p> <br>
             <button type="submit">Cadastrar</button>
         </form>
     </div>
